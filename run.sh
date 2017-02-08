@@ -8,7 +8,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 rm -rf /root/docs/target
 rsync -av /root/docs/original/ /root/docs/target
 
-# add the stable docs
+# add the 2.5 docs
 cd /root/docs/cyrus-imapd-2.5/
 git fetch
 git checkout -q origin/cyrus-imapd-2.5
@@ -16,6 +16,15 @@ cd docsrc
 make html
 rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target
 rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target/stable
+rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target/2.5
+
+# add the 3.0 docs
+cd /root/docs/cyrus-imapd-3.0/
+git fetch
+git checkout -q origin/cyrus-imapd-3.0
+cd docsrc
+make html
+rsync -av /root/docs/cyrus-imapd-3.0/docsrc/build/html/ /root/docs/target/3.0
 
 # add the developent docs
 cd /root/docs/cyrus-imapd/
