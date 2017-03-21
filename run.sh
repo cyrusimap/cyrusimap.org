@@ -14,8 +14,6 @@ git fetch
 git checkout -q origin/cyrus-imapd-2.5
 cd docsrc
 make html
-rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target
-rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target/stable
 rsync -av /root/docs/cyrus-imapd-2.5/docsrc/build/html/ /root/docs/target/2.5
 
 # add the 3.0 docs
@@ -24,9 +22,11 @@ git fetch
 git checkout -q origin/cyrus-imapd-3.0
 cd docsrc
 make html
+rsync -av /root/docs/cyrus-imapd-3.0/docsrc/build/html/ /root/docs/target
+rsync -av /root/docs/cyrus-imapd-3.0/docsrc/build/html/ /root/docs/target/stable
 rsync -av /root/docs/cyrus-imapd-3.0/docsrc/build/html/ /root/docs/target/3.0
 
-# add the developent docs
+# add the development docs
 cd /root/docs/cyrus-imapd/
 git fetch
 git checkout -q origin/master
