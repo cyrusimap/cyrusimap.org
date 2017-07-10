@@ -1,1 +1,21 @@
 Sitemap: https://www.cyrusimap.org/sitemapindex.xml
+
+User-Agent: Googlebot
+Disallow: /mediawiki/index.php/Special:
+Disallow: /mediawiki/index.php/MediaWiki
+Disallow: /mediawiki/index.php/Help
+Disallow: /mediawiki/index.php/Template
+Disallow: /mediawiki/index.php*&
+
+User-Agent: Slurp
+Disallow: /mediawiki/index.php/Special:
+Disallow: /mediawiki/index.php/MediaWiki
+Disallow: /mediawiki/index.php/Help
+Disallow: /mediawiki/index.php/Template
+Disallow: /mediawiki/index.php*&
+
+User-Agent: *
+Disallow: /mediawiki/index.php/Special:
+Disallow: /mediawiki/index.php/MediaWiki
+Disallow: /mediawiki/index.php/Help
+Disallow: /mediawiki/index.php/Template
