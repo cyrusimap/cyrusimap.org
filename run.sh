@@ -8,6 +8,11 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 rm -rf /root/docs/target
 rsync -av /root/docs/original/ /root/docs/target
 
+# add files from this repo
+# XXX there's probably a better way to achieve this
+cp -p /root/docs/robots.txt /root/docs/target/
+cp -p /root/docs/sitemapindex.xml /root/docs/target/
+
 # add the 2.5 docs
 cd /root/docs/cyrus-imapd-2.5/
 git fetch
