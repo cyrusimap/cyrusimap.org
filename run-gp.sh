@@ -16,14 +16,16 @@ mkdir -p $basedir
 if [ -d "$target" ]; then
     git -C $target pull
 else
-    git clone -q https://github.com/cyrusimap/cyrusimap.github.io.git $target
+    git clone git@github.com:cyrusimap/cyrusimap.github.io.git $target
+    git -C $target config --add user.name cyrusdocgen
+    git -C $target config --add user.email cyrusdocgen@users.noreply.github.com
 fi
 
 # make sure we have the source trees
-test -d $saslsource || git clone -q https://github.com/cyrusimap/cyrus-sasl.git $saslsource
-test -d $imapsource || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource
-test -d $imapsource25 || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource25
-test -d $imapsource30 || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource30
+test -d $saslsource || git clone https://github.com/cyrusimap/cyrus-sasl.git $saslsource
+test -d $imapsource || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource
+test -d $imapsource25 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource25
+test -d $imapsource30 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource30
 
 # add the 2.5 docs
 cd $imapsource25
