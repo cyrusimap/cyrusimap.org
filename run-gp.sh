@@ -64,5 +64,5 @@ rsync -av $saslsource/docsrc/build/html/ $target/sasl
 # copy the new docs to the website
 cd $target
 git add --all
-git commit -m "automatic commit"
+git commit -m "automatic commit" || true ## FIXME
 git push
