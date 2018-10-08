@@ -4,20 +4,26 @@ set -e
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 
-target=/home/ellie/fastmail/cyrusimap.github.io
-imapsource25=/home/ellie/fastmail/build/cyrus-imapd-2.5
-imapsource30=/home/ellie/fastmail/build/cyrus-imapd-3.0
-imapsource=/home/ellie/fastmail/build/cyrus-imapd
-saslsource=/home/ellie/fastmail/build/cyrus-sasl
+basedir=/tmp/JENKINS_BUILD_DIR/
+target=$basedir/cyrusimap.github.io
+imapsource25=$basedir/cyrus-imapd-2.5
+imapsource30=$basedir/cyrus-imapd-3.0
+imapsource=$basedir/cyrus-imapd
+saslsource=$basedir/cyrus-sasl
 
-# set up a clean target
-#rm -rf /root/docs/target
-#rsync -av /root/docs/original/ /root/docs/target
+# pull the target
+mkdir -p $basedir
+if [ -d "$target" ]; then
+    git -C $target pull
+else
+    git clone -q https://github.com/cyrusimap/cyrusimap.github.io.git $target
+fi
 
-# add files from this repo
-# XXX there's probably a better way to achieve this
-#cp -p /root/docs/robots.txt /root/docs/target/
-#cp -p /root/docs/sitemapindex.xml /root/docs/target/
+# make sure we have the source trees
+test -d $saslsource || git clone -q https://github.com/cyrusimap/cyrus-sasl.git $saslsource
+test -d $imapsource || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource
+test -d $imapsource25 || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource25
+test -d $imapsource30 || git clone -q https://github.com/cyrusimap/cyrus-imapd.git $imapsource30
 
 # add the 2.5 docs
 cd $imapsource25
