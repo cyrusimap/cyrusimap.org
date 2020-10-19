@@ -4,7 +4,7 @@ set -e
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 
-basedir=/tmp/CYURS_DOCS_BUILD_DIR/
+basedir=/tmp/CYRUS_DOCS_BUILD_DIR/
 target=$basedir/cyrusimap.github.io
 imapsource25=$basedir/cyrus-imapd-2.5
 imapsource30=$basedir/cyrus-imapd-3.0
