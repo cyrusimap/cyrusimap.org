@@ -10,6 +10,7 @@ imapsource25=$basedir/cyrus-imapd-2.5
 imapsource30=$basedir/cyrus-imapd-3.0
 imapsource32=$basedir/cyrus-imapd-3.2
 imapsource34=$basedir/cyrus-imapd-3.4
+imapsource36=$basedir/cyrus-imapd-3.6
 imapsource=$basedir/cyrus-imapd
 saslsource=$basedir/cyrus-sasl
 
@@ -30,6 +31,8 @@ test -d $imapsource25 || git clone https://github.com/cyrusimap/cyrus-imapd.git 
 test -d $imapsource30 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource30
 test -d $imapsource32 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource32
 test -d $imapsource34 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource34
+test -d $imapsource36 || git clone https://github.com/cyrusimap/cyrus-imapd.git $imapsource36
+
 
 # add the 2.5 docs
 cd $imapsource25
@@ -64,6 +67,14 @@ make html
 rsync -av $imapsource34/docsrc/build/html/ $target
 rsync -av $imapsource34/docsrc/build/html/ $target/stable
 rsync -av $imapsource34/docsrc/build/html/ $target/3.4
+
+# add the 3.6 docs
+cd $imapsource36
+git fetch
+git checkout -q origin/cyrus-imapd-3.6
+cd docsrc
+make html
+rsync -av $imapsource36/docsrc/build/html/ $target/3.6
 
 # add the development docs
 cd $imapsource
