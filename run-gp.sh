@@ -74,8 +74,6 @@ git fetch
 git checkout -q origin/cyrus-imapd-3.6
 cd docsrc
 make html
-rsync -av $imapsource36/docsrc/build/html/ $target
-rsync -av $imapsource36/docsrc/build/html/ $target/stable
 rsync -av $imapsource36/docsrc/build/html/ $target/3.6
 
 # add the 3.8 docs
@@ -84,6 +82,8 @@ git fetch
 git checkout -q origin/cyrus-imapd-3.8
 cd docsrc
 make html
+rsync -av $imapsource38/docsrc/build/html/ $target
+rsync -av $imapsource38/docsrc/build/html/ $target/stable
 rsync -av $imapsource38/docsrc/build/html/ $target/3.8
 
 # add the development docs
