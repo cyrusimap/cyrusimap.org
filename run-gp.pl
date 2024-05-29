@@ -59,6 +59,7 @@ my $basedir = '/tmp/CYRUS_DOCS_BUILD_DIR';
 my $target = {
     clonedir    => canonpath("$basedir/cyrusimap.github.io"),
     repo        => 'git@github.com:cyrusimap/cyrusimap.github.io.git',
+    branch      => 'master',
     user_name   => 'cyrusdocgen',
     user_email  => 'cyrusdocgen@users.noreply.github.com',
 };
@@ -179,35 +180,49 @@ chdir $basedir or die "chdir $basedir: $!\n";
 # pull the target
 if (-d $target->{clonedir}) {
     print "===> updating $target->{repo}...\n";
-    # XXX would be better to fetch and reset here
-    run_or_die('git', '-C', $target->{clonedir}, 'pull');
+    run_or_die('git', '-C', $target->{clonedir},
+               'checkout', '-q', $target->{branch});
+    run_or_die('git', '-C', $target->{clonedir},
+               'fetch', 'origin');
+    run_or_die('git', '-C', $target->{clonedir},
+               'reset', '--hard', '@{u}');
 }
 else {
     print "===> cloning $target->{repo}...\n";
-    run_or_die('git', 'clone', $target->{repo}, $target->{clonedir});
-    run_or_die('git', '-C', $target->{clonedir}, 'config', '--add',
-        'user.name', $target->{user_name});
-    run_or_die('git', '-C', $target->{clonedir}, 'config', '--add',
-        'user.email', $target->{user_email});
+    run_or_die('git', 'clone', $target->{repo},
+               '--branch', $target->{branch},
+               '--single-branch',
+               '--no-tags',
+               $target->{clonedir});
+    run_or_die('git', '-C', $target->{clonedir},
+               'config', '--add', 'user.name', $target->{user_name});
+    run_or_die('git', '-C', $target->{clonedir},
+               'config', '--add', 'user.email', $target->{user_email});
+    run_or_die('git', '-C', $target->{clonedir},
+               'checkout', '-q', $target->{branch});
 }
 
 # build the docs from each source
 foreach my $source (sort keys %{$sources}) {
     my $details = $sources->{$source};
     my $dir = canonpath("$basedir/$source");
+    my $branch = $details->{branch} || $source;
 
     # first make sure we have the source tree
     if (! -d $dir) {
         print "===> cloning $details->{repo}...\n";
-        # XXX would be better to clone only the branch we care about
-        run_or_die('git', 'clone', $details->{repo}, $dir);
+        run_or_die('git', 'clone', $details->{repo},
+                   '--branch', $branch,
+                   '--single-branch',
+                   '--no-tags',
+                   $dir);
     }
 
-    my $branch = $details->{branch} || $source;
     print "===> building docs for $source($branch)...\n";
-    # XXX would be better to fetch only the branch we care about
-    run_or_die('git', '-C', $dir, 'fetch');
-    run_or_die('git', '-C', $dir, 'checkout', '-q', "origin/$branch");
+    run_or_die('git', '-C', $dir,
+               'fetch', 'origin');
+    run_or_die('git', '-C', $dir,
+               'checkout', '-q', "origin/$branch");
     run_or_die('make', '-C', canonpath("$dir/docsrc"), 'html');
 }
 
@@ -224,13 +239,15 @@ foreach my $webpath (sort keys %{$webpaths}) {
 
 # commit the updated docs to the website repo
 print "===> committing updated docs...\n";
-run_or_die('git', '-C', $target->{clonedir}, 'add', '--all');
+run_or_die('git', '-C', $target->{clonedir},
+           'add', '--all');
 # XXX git commit returns non-zero if nothing had changed, but that's fine
 run_and_ignore_nonzero('git', '-C', $target->{clonedir},
                        'commit', '-m', 'automatic commit');
 if ($do_publish) {
     print "===> publishing to website...\n";
-    run_or_die('git', '-C', $target->{clonedir}, 'push');
+    run_or_die('git', '-C', $target->{clonedir},
+               'push');
 }
 else {
     print "===> (--publish not requested, not publishing to website)\n";
