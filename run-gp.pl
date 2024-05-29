@@ -179,7 +179,7 @@ chdir $basedir or die "chdir $basedir: $!\n";
 
 # pull the target
 if (-d $target->{clonedir}) {
-    print "===> updating $target->{repo}...\n";
+    print "#### updating website repository...\n";
     run_or_die('git', '-C', $target->{clonedir},
                'checkout', '-q', $target->{branch});
     run_or_die('git', '-C', $target->{clonedir},
@@ -188,7 +188,7 @@ if (-d $target->{clonedir}) {
                'reset', '--hard', '@{u}');
 }
 else {
-    print "===> cloning $target->{repo}...\n";
+    print "#### cloning website repository...\n";
     run_or_die('git', 'clone', $target->{repo},
                '--branch', $target->{branch},
                '--single-branch',
@@ -210,17 +210,20 @@ foreach my $source (sort keys %{$sources}) {
 
     # first make sure we have the source tree
     if (! -d $dir) {
-        print "===> cloning $details->{repo}...\n";
+        print "#### cloning repo for $source...\n";
         run_or_die('git', 'clone', $details->{repo},
                    '--branch', $branch,
                    '--single-branch',
                    '--no-tags',
                    $dir);
     }
+    else {
+        print "#### updating repo for $source...\n";
+        run_or_die('git', '-C', $dir,
+                   'fetch', 'origin');
+    }
 
-    print "===> building docs for $source($branch)...\n";
-    run_or_die('git', '-C', $dir,
-               'fetch', 'origin');
+    print "#### building docs for $source...\n";
     run_or_die('git', '-C', $dir,
                'checkout', '-q', "origin/$branch");
     run_or_die('make', '-C', canonpath("$dir/docsrc"), 'html');
@@ -232,23 +235,23 @@ foreach my $webpath (sort keys %{$webpaths}) {
     my $src = canonpath("$basedir/$source/docsrc/build/html");
     my $dest = canonpath("$target->{clonedir}/$webpath");
 
-    print "===> rsyncing $source docs to $webpath...\n";
+    print "#### rsyncing $source docs to $webpath...\n";
     # n.b. trailing / on src argument is load-bearing
     run_or_die('rsync', '-av', "$src/", $dest);
 }
 
 # commit the updated docs to the website repo
-print "===> committing updated docs...\n";
+print "#### committing updated docs...\n";
 run_or_die('git', '-C', $target->{clonedir},
            'add', '--all');
 # XXX git commit returns non-zero if nothing had changed, but that's fine
 run_and_ignore_nonzero('git', '-C', $target->{clonedir},
                        'commit', '-m', 'automatic commit');
 if ($do_publish) {
-    print "===> publishing to website...\n";
+    print "#### publishing to website...\n";
     run_or_die('git', '-C', $target->{clonedir},
                'push');
 }
 else {
-    print "===> (--publish not requested, not publishing to website)\n";
+    print "#### (--publish not requested, not publishing to website)\n";
 }
