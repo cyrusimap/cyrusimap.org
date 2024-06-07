@@ -173,6 +173,10 @@ GetOptions(
 ) || pod2usage(2);
 pod2usage(0) if $do_help;
 
+# set up PATH
+$ENV{PATH} = join(q{:}, qw( /usr/local/bin /usr/bin /bin ));
+print "#### \$PATH is \"$ENV{PATH}\"\n";
+
 # set up our basedir
 make_path($basedir);
 chdir $basedir or die "chdir $basedir: $!\n";
