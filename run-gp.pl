@@ -107,8 +107,8 @@ my $sources = {
 # '/sasl' should always be the cyrus-sasl master,
 # Hopefully the rest is self-evident
 my $webpaths = {
-    '/'         => 'cyrus-imapd-3.8',
-    '/stable'   => 'cyrus-imapd-3.8',
+    '/'         => 'cyrus-imapd-3.10',
+    '/stable'   => 'cyrus-imapd-3.10',
     '/dev'      => 'cyrus-imapd',
     '/sasl'     => 'cyrus-sasl',
     '/2.5'      => 'cyrus-imapd-2.5',
