@@ -97,6 +97,9 @@ my $sources = {
     'cyrus-imapd-3.10' => {
         repo => 'https://github.com/cyrusimap/cyrus-imapd.git',
     },
+    'cyrus-imapd-3.12' => {
+        repo => 'https://github.com/cyrusimap/cyrus-imapd.git',
+    },
 };
 
 # Maps web paths to sources from above
@@ -118,6 +121,7 @@ my $webpaths = {
     '/3.6'      => 'cyrus-imapd-3.6',
     '/3.8'      => 'cyrus-imapd-3.8',
     '/3.10'     => 'cyrus-imapd-3.10',
+    '/3.12'     => 'cyrus-imapd-3.12',
 };
 
 sub run_or_die
